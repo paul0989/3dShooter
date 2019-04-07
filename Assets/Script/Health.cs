@@ -5,7 +5,7 @@ using UnityEngine;
 public class Health : MonoBehaviour {
     public float RotationSpeed = 90;//旋轉速度
     public int Treatment = 10;//治療量
-    private GameObject HealthCap;
+    //private GameObject HealthCap;
     private bool PlayerTouch;//player是否碰到
     private PlayerHealth playerHealth;//碰到時呼叫
     //補血的CD時間
@@ -22,7 +22,7 @@ public class Health : MonoBehaviour {
 
     private void PlayerHealthAction()
     {
-        HealthCap.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     private void Start()

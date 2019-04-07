@@ -48,16 +48,8 @@ public class EnemyAttack : MonoBehaviour {
     //Event註冊.取消
     private void OnEnable()
     {
-        try
-        {
             PlayerHealth.PlayerDeathEvent += PlayerDeathAction;
             PlayerHealth.PlayerContinueEvent += PlayerContinueAction;
-        }
-        catch
-        {
-            Debug.Log("catch");
-        }
-        
     }
     private void OnDisable()
     {
