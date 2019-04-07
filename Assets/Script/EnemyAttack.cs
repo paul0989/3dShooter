@@ -40,6 +40,7 @@ public class EnemyAttack : MonoBehaviour {
         //enemy(Animator>transition)
         enemyAnimator.SetTrigger("PlayerContinue");
         //player接關後enemy導航.移動
+
         GetComponent<EnemyMovement>().enabled = true;
         GetComponent<NavMeshAgent>().enabled = true;
     }

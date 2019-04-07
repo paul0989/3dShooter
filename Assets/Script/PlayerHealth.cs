@@ -12,6 +12,7 @@ public class PlayerHealth : MonoBehaviour {
 
     //被攻擊
     public AudioClip deathClip;//死亡音效
+    public AudioClip hurtClip;//被打音效
     public Image damageImage;//被打特效
     public float flashSpeed = 5f;//閃爍速度
     public Color flashColor = new Color(1f, 0f, 0f, 0.1f);//閃爍顏色,Color(R,G,B,A)
@@ -39,10 +40,10 @@ public class PlayerHealth : MonoBehaviour {
 
 
 
-
+    //private bool isRevival = false;//復活切換
     public GameObject Restart;
     public GameObject Continue;
-    private float delay = 2.0f;
+    //private float delay = 2.0f;
 
     // Use this for initialization
     private void Awake()
@@ -88,17 +89,18 @@ public class PlayerHealth : MonoBehaviour {
     public void ContinueLevel()
     {
         isDeath = false;
-        //playerAudio.clip = deathClip;
+        //playerAudio.clip = null;
         //playerAudio.Play();
         playerAnimator.SetTrigger("Live");
-
-        //復活後讓角色可以移動
-        GetComponent<PlayMovement>().enabled = true;
-        //復活後讓角色可以開槍(射擊的腳本在player底下的GunbarrelEnd)
-        GetComponentInChildren<PlayerShooting>().enabled = true;
-
+        playerAudio.clip = hurtClip;
         currentHealth = startingHealth;
+        //復活後讓角色可以移動
+        //GetComponent<PlayMovement>().enabled = true;
+        //復活後讓角色可以開槍(射擊的腳本在player底下的GunbarrelEnd)
+        //GetComponentInChildren<PlayerShooting>().enabled = true;
+
         
+        playerAudio.clip = hurtClip;
 
         Restart.SetActive(false);
         Continue.SetActive(false);
@@ -107,6 +109,14 @@ public class PlayerHealth : MonoBehaviour {
         {
             PlayerContinueEvent();
         }
+    }
+    public void Revival()
+    {
+        //復活後讓角色可以移動
+        GetComponent<PlayMovement>().enabled = true;
+        //復活後讓角色可以開槍(射擊的腳本在player底下的GunbarrelEnd)
+        GetComponentInChildren<PlayerShooting>().enabled = true;
+
     }
 
 
@@ -172,5 +182,6 @@ public class PlayerHealth : MonoBehaviour {
             HealImage.color = Color.Lerp(HealImage.color, Color.clear, Time.deltaTime * HealflashSpeed);
 
         }
+
     }
 }
