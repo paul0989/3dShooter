@@ -23,7 +23,7 @@ public class EnemyAttack : MonoBehaviour {
     }
 
     //Event  playerHealth.cs
-    private void playerDeathAction()
+    private void PlayerDeathAction()
     {       
         playerIsDeath = true;
         //enemy(Animator>transition)
@@ -33,14 +33,35 @@ public class EnemyAttack : MonoBehaviour {
         GetComponent<NavMeshAgent>().enabled=false;
     }
 
+    //Event  playerHealth.cs
+    private void PlayerContinueAction()
+    {
+        playerIsDeath = false;
+        //enemy(Animator>transition)
+        enemyAnimator.SetTrigger("PlayerContinue");
+        //player接關後enemy導航.移動
+        GetComponent<EnemyMovement>().enabled = true;
+        GetComponent<NavMeshAgent>().enabled = true;
+    }
+
     //Event註冊.取消
     private void OnEnable()
     {
-        PlayerHealth.PlayerDeathEvent += playerDeathAction;
+        try
+        {
+            PlayerHealth.PlayerDeathEvent += PlayerDeathAction;
+            PlayerHealth.PlayerContinueEvent += PlayerContinueAction;
+        }
+        catch
+        {
+            Debug.Log("catch");
+        }
+        
     }
     private void OnDisable()
     {
-        PlayerHealth.PlayerDeathEvent -= playerDeathAction;
+        PlayerHealth.PlayerDeathEvent -= PlayerDeathAction;
+        PlayerHealth.PlayerContinueEvent -= PlayerContinueAction;
     }
 
     private void OnTriggerEnter(Collider other)//Player在可攻擊範圍內

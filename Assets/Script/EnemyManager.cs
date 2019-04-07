@@ -18,7 +18,15 @@ public class EnemyManager : MonoBehaviour {
 
     private void OnEnable()
     {
-        PlayerHealth.PlayerDeathEvent += playerDeathAction;
+        //PlayerHealth.PlayerDeathEvent += playerDeathAction;
+        try
+        {
+            PlayerHealth.PlayerDeathEvent += playerDeathAction;
+        }
+        catch
+        {
+            Debug.Log("catch");
+        }
     }
     private void OnDisable()
     {
