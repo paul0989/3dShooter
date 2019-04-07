@@ -43,6 +43,7 @@ public class PlayerHealth : MonoBehaviour {
     //private bool isRevival = false;//復活切換
     public GameObject Restart;
     public GameObject Continue;
+
     //private float delay = 2.0f;
 
     // Use this for initialization
@@ -94,12 +95,14 @@ public class PlayerHealth : MonoBehaviour {
         playerAnimator.SetTrigger("Live");
         playerAudio.clip = hurtClip;
         currentHealth = startingHealth;
+        healthSlider.value = currentHealth;
+
         //復活後讓角色可以移動
         //GetComponent<PlayMovement>().enabled = true;
         //復活後讓角色可以開槍(射擊的腳本在player底下的GunbarrelEnd)
         //GetComponentInChildren<PlayerShooting>().enabled = true;
 
-        
+
         playerAudio.clip = hurtClip;
 
         Restart.SetActive(false);
@@ -151,13 +154,14 @@ public class PlayerHealth : MonoBehaviour {
         {
             currentHealth = startingHealth;
             healthSlider.value = currentHealth;
+
         }
         else
         {
             currentHealth += Healamount;
             healthSlider.value = currentHealth;
         }
-       
+
     }
     private void Update()
     {

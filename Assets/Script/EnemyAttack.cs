@@ -89,6 +89,11 @@ public class EnemyAttack : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         timer += Time.deltaTime;//每個frame做deltaTime的增加
+
+        if (enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            return;
+        }
         //player在範圍內And player沒死(playerIsDeath==false)
         if (playerInRange && playerIsDeath==false)
         {
