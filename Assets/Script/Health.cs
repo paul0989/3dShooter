@@ -13,17 +13,18 @@ public class Health : MonoBehaviour {
     private float timeBetweenHealth = 0.5f;
 
     private bool playerIsDeath = false;
+    private bool EatHealth;
 
     private void Awake()
     {
         GameObject player = GameObject.FindGameObjectWithTag("Player");
         playerHealth = player.GetComponent<PlayerHealth>();
     }
-
     private void PlayerHealthAction()
     {
-        gameObject.SetActive(false);
+        playerIsDeath = false;
     }
+
 
     private void Start()
     {

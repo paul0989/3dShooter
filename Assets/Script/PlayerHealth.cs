@@ -38,6 +38,10 @@ public class PlayerHealth : MonoBehaviour {
     public delegate void PlayerHealthAction();
     public static event PlayerHealthAction PlayerHealthEvent;
 
+    public delegate void PlayerEatHealthAction();
+    public static event PlayerEatHealthAction PlayerEatHealthEvent;
+
+
 
 
     //private bool isRevival = false;//復活切換
