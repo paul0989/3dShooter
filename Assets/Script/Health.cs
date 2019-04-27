@@ -74,6 +74,8 @@ public class Health : MonoBehaviour {
         {
             if (timer >= timeBetweenHealth)
             {
+                HealthManager._Instance.HealthObjectCostEnergy(this.gameObject);
+                PlayerTouch = false;
                 HealPlayer();
             }
 

@@ -7,6 +7,8 @@ public class PlayerShooting : MonoBehaviour {
     public int damagePerShot = 20;
     //槍的射程
     public float range = 100f;
+    //開槍消耗彈藥
+    public int AmmoCost = 1;
     //設定一條射線
     private Ray shootRay;
     private RaycastHit shootHit;
@@ -17,6 +19,12 @@ public class PlayerShooting : MonoBehaviour {
     private ParticleSystem gunParticle;
     private AudioSource gunAudio;
     private LineRenderer gunLine;
+    //裝填彈藥時間
+    public readonly float ReloadTime = 3f;
+    public float nextReloadTime;
+
+    public GameObject AmmoReload;
+
 
     public float timeBetweenBullets = 0.15f;//開槍頻率(週期)
     private float effectsDisplayTime = 0.1f;//特效顯示時間
@@ -51,6 +59,10 @@ public class PlayerShooting : MonoBehaviour {
         shootRay.origin = transform.position;
         //transform是個人座標,依照轉的方向改變,Vector3則是世界座標(不會因旋轉改變方向)
         shootRay.direction = transform.forward;
+        //消耗彈藥
+        AmmoManager.AmmoCurrent -= AmmoCost;
+        
+        
 
         //碰撞              從槍口發出一條射線     範圍 ,能夠打到誰(enemy)
         if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
@@ -76,14 +88,30 @@ public class PlayerShooting : MonoBehaviour {
         gunLine.enabled = false;
         gunLight.enabled = false;
     }
+    private void Reload()
+    {
+
+        AmmoReload.SetActive(false);
+
+    }
 
     // Update is called once per frame
     void Update () {
         timer += Time.deltaTime;
         //呼叫,按下滑鼠左鍵呼叫Shoot  && timer大於或等於timeBetweenBullets的時間
-        if (Input.GetButtonDown("Fire1") && timer>=timeBetweenBullets)
+        if(AmmoManager.AmmoCurrent >= 1)
         {
-            Shoot();
+            if (Input.GetButtonDown("Fire1") && timer >= timeBetweenBullets)
+            {
+                Shoot();
+            }
+        }        
+        else
+        {
+            //裝填彈藥
+            AmmoReload.SetActive(true);
+            AmmoManager._Instance.AmmoReloading();
+            //Reload();
         }
         if (timer >= timeBetweenBullets*effectsDisplayTime)
         {
@@ -91,3 +119,5 @@ public class PlayerShooting : MonoBehaviour {
         }
 	}
 }
+
+       
