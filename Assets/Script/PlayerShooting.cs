@@ -19,12 +19,13 @@ public class PlayerShooting : MonoBehaviour {
     private ParticleSystem gunParticle;
     private AudioSource gunAudio;
     private LineRenderer gunLine;
-    //裝填彈藥時間
+    //目前彈藥.總彈藥.重新裝填時間
+    public static int AmmoCurrent = 30;
+    public static int AmmoTotal = 900;
     public readonly float ReloadTime = 3f;
     public float nextReloadTime;
-
+    //重新裝填文字
     public GameObject AmmoReload;
-
 
     public float timeBetweenBullets = 0.15f;//開槍頻率(週期)
     private float effectsDisplayTime = 0.1f;//特效顯示時間
@@ -60,7 +61,7 @@ public class PlayerShooting : MonoBehaviour {
         //transform是個人座標,依照轉的方向改變,Vector3則是世界座標(不會因旋轉改變方向)
         shootRay.direction = transform.forward;
         //消耗彈藥
-        AmmoManager.AmmoCurrent -= AmmoCost;
+        AmmoManager.AmmoCurrent-=AmmoCost;
         
         
 
@@ -88,13 +89,11 @@ public class PlayerShooting : MonoBehaviour {
         gunLine.enabled = false;
         gunLight.enabled = false;
     }
-    private void Reload()
+    public void AmmoReloading()
     {
-
-        AmmoReload.SetActive(false);
+        nextReloadTime = Time.time + ReloadTime;
 
     }
-
     // Update is called once per frame
     void Update () {
         timer += Time.deltaTime;
@@ -110,9 +109,16 @@ public class PlayerShooting : MonoBehaviour {
         {
             //裝填彈藥
             AmmoReload.SetActive(true);
-            AmmoManager._Instance.AmmoReloading();
+            AmmoReloading();
             //Reload();
         }
+    /*        if (AmmoManager.AmmoCurrent == 0 && Time.time >= nextReloadTime)
+            {
+
+                AmmoManager.AmmoCurrent = 30;
+                AmmoManager.AmmoTotal = AmmoManager.AmmoTotal - 30;
+                AmmoReload.SetActive(false);
+            }*/
         if (timer >= timeBetweenBullets*effectsDisplayTime)
         {
             DisableEffects();
