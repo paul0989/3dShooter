@@ -23,7 +23,7 @@ public class EnemyAttack : MonoBehaviour {
     }
 
     //Event  playerHealth.cs
-    private void playerDeathAction()
+    private void PlayerDeathAction()
     {       
         playerIsDeath = true;
         //enemy(Animator>transition)
@@ -33,14 +33,28 @@ public class EnemyAttack : MonoBehaviour {
         GetComponent<NavMeshAgent>().enabled=false;
     }
 
+    //Event  playerHealth.cs
+    private void PlayerContinueAction()
+    {
+        playerIsDeath = false;
+        //enemy(Animator>transition)
+        enemyAnimator.SetTrigger("PlayerContinue");
+        //player接關後enemy導航.移動
+
+        GetComponent<EnemyMovement>().enabled = true;
+        GetComponent<NavMeshAgent>().enabled = true;
+    }
+
     //Event註冊.取消
     private void OnEnable()
     {
-        PlayerHealth.PlayerDeathEvent += playerDeathAction;
+            PlayerHealth.PlayerDeathEvent += PlayerDeathAction;
+            PlayerHealth.PlayerContinueEvent += PlayerContinueAction;
     }
     private void OnDisable()
     {
-        PlayerHealth.PlayerDeathEvent -= playerDeathAction;
+        PlayerHealth.PlayerDeathEvent -= PlayerDeathAction;
+        PlayerHealth.PlayerContinueEvent -= PlayerContinueAction;
     }
 
     private void OnTriggerEnter(Collider other)//Player在可攻擊範圍內
@@ -67,6 +81,11 @@ public class EnemyAttack : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         timer += Time.deltaTime;//每個frame做deltaTime的增加
+
+        if (enemyAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            return;
+        }
         //player在範圍內And player沒死(playerIsDeath==false)
         if (playerInRange && playerIsDeath==false)
         {

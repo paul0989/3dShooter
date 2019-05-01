@@ -7,6 +7,8 @@ public class PlayerShooting : MonoBehaviour {
     public int damagePerShot = 20;
     //槍的射程
     public float range = 100f;
+    //開槍消耗彈藥
+    public int AmmoCost = 1;
     //設定一條射線
     private Ray shootRay;
     private RaycastHit shootHit;
@@ -17,6 +19,18 @@ public class PlayerShooting : MonoBehaviour {
     private ParticleSystem gunParticle;
     private AudioSource gunAudio;
     private LineRenderer gunLine;
+    //目前彈藥.總彈藥.重新裝填時間
+    //public static int AmmoCurrent = 10;
+    //public static int AmmoCapNum = 10;
+    //public static int AmmoTotal = 900;
+    public readonly float ReloadTime = 3f;
+    public float nextReloadTime;
+
+    //換彈藥狀態
+    public bool IsReloading = false;
+
+    //重新裝填文字
+    public GameObject AmmoReload;
 
     public float timeBetweenBullets = 0.15f;//開槍頻率(週期)
     private float effectsDisplayTime = 0.1f;//特效顯示時間
@@ -51,6 +65,10 @@ public class PlayerShooting : MonoBehaviour {
         shootRay.origin = transform.position;
         //transform是個人座標,依照轉的方向改變,Vector3則是世界座標(不會因旋轉改變方向)
         shootRay.direction = transform.forward;
+        //消耗彈藥
+        AmmoManager.AmmoCurrent-=AmmoCost;
+        
+        
 
         //碰撞              從槍口發出一條射線     範圍 ,能夠打到誰(enemy)
         if (Physics.Raycast(shootRay, out shootHit, range, shootableMask))
@@ -76,18 +94,46 @@ public class PlayerShooting : MonoBehaviour {
         gunLine.enabled = false;
         gunLight.enabled = false;
     }
+    public void AmmoReloading()
+    {
+        nextReloadTime = Time.time + ReloadTime;
 
+    }
     // Update is called once per frame
     void Update () {
         timer += Time.deltaTime;
         //呼叫,按下滑鼠左鍵呼叫Shoot  && timer大於或等於timeBetweenBullets的時間
-        if (Input.GetButtonDown("Fire1") && timer>=timeBetweenBullets)
+        if(AmmoManager.AmmoCurrent >= 1)
         {
-            Shoot();
+            if (Input.GetButtonDown("Fire1") && timer >= timeBetweenBullets)
+            {
+                Shoot();
+            }
         }
-        if (timer >= timeBetweenBullets*effectsDisplayTime)
+        if (AmmoManager.AmmoCurrent == 0 && IsReloading == false)
+        {
+            //裝填彈藥
+            IsReloading = true;
+            AmmoReload.SetActive(true);
+            nextReloadTime = Time.time + ReloadTime;
+            //AmmoReloading();
+
+        }
+
+        //if (AmmoManager.AmmoCurrent == 0 && Time.time >= nextReloadTime)
+        if (AmmoReload.activeSelf == true && Time.time >= nextReloadTime)
+        {
+            IsReloading = false;
+            AmmoManager.AmmoCurrent = AmmoManager.AmmoCapNum;
+            AmmoManager.AmmoTotal = AmmoManager.AmmoTotal - AmmoManager.AmmoCapNum;
+            AmmoReload.SetActive(false);
+        }
+
+        if (timer >= timeBetweenBullets * effectsDisplayTime)
         {
             DisableEffects();
         }
-	}
+    }
 }
+
+       
