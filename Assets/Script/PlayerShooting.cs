@@ -20,10 +20,15 @@ public class PlayerShooting : MonoBehaviour {
     private AudioSource gunAudio;
     private LineRenderer gunLine;
     //目前彈藥.總彈藥.重新裝填時間
-    public static int AmmoCurrent = 30;
-    public static int AmmoTotal = 900;
+    //public static int AmmoCurrent = 30;
+    //public static int AmmoAmmoCapNum = 30;
+    //public static int AmmoTotal = 900;
     public readonly float ReloadTime = 3f;
     public float nextReloadTime;
+
+    //換彈藥狀態
+    public bool IsReloading = false;
+
     //重新裝填文字
     public GameObject AmmoReload;
 
@@ -104,27 +109,31 @@ public class PlayerShooting : MonoBehaviour {
             {
                 Shoot();
             }
-        }        
-        else
+        }
+        if (AmmoManager.AmmoCurrent == 0 && IsReloading == false)
         {
             //裝填彈藥
+            IsReloading = true;
             AmmoReload.SetActive(true);
             nextReloadTime = Time.time + ReloadTime;
             //AmmoReloading();
 
         }
-            if (AmmoManager.AmmoCurrent == 0 && Time.time >= nextReloadTime)
-            {
 
-                AmmoManager.AmmoCurrent = 30;
-                AmmoManager.AmmoTotal = AmmoManager.AmmoTotal - 30;
-                AmmoReload.SetActive(false);
-            }
-        if (timer >= timeBetweenBullets*effectsDisplayTime)
+        //if (AmmoManager.AmmoCurrent == 0 && Time.time >= nextReloadTime)
+        if (AmmoReload.activeSelf == true && Time.time >= nextReloadTime)
+        {
+            IsReloading = false;
+            AmmoManager.AmmoCurrent = AmmoManager.AmmoCapNum;
+            AmmoManager.AmmoTotal = AmmoManager.AmmoTotal - AmmoManager.AmmoCapNum;
+            AmmoReload.SetActive(false);
+        }
+
+        if (timer >= timeBetweenBullets * effectsDisplayTime)
         {
             DisableEffects();
         }
-	}
+    }
 }
 
        

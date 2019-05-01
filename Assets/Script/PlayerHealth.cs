@@ -89,7 +89,11 @@ public class PlayerHealth : MonoBehaviour {
             PlayerDeathEvent();
         }
     }
-
+    //重新開始
+    public void RestartLevel()
+    {
+        Application.LoadLevel("Level1");
+    }
     //接關
     public void ContinueLevel()
     {

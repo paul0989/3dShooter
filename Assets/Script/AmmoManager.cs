@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class AmmoManager : MonoBehaviour {
-    //目前彈藥.總彈藥.重新裝填時間
+    //目前彈藥.彈匣容量.總彈藥量.重新裝填時間
     public static int AmmoCurrent=30;
+    public static int AmmoCapNum = 30;
     public static int AmmoTotal=900;
     /*public readonly float ReloadTime = 3f;
     public float nextReloadTime;
@@ -13,7 +14,7 @@ public class AmmoManager : MonoBehaviour {
     public GameObject AmmoReload;
     */
     // Static Manager
-    public static AmmoManager _Instance;
+    //public static AmmoManager _Instance;
 
 
     private Text AmmoText;
@@ -21,7 +22,7 @@ public class AmmoManager : MonoBehaviour {
     private void Awake()
     {
         AmmoText = GetComponent<Text>();
-        _Instance = this;
+        //_Instance = this;
     }
     /*public void AmmoReloading()
     {
