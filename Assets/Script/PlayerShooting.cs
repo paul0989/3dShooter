@@ -109,16 +109,17 @@ public class PlayerShooting : MonoBehaviour {
         {
             //裝填彈藥
             AmmoReload.SetActive(true);
-            AmmoReloading();
-            //Reload();
+            nextReloadTime = Time.time + ReloadTime;
+            //AmmoReloading();
+
         }
-    /*        if (AmmoManager.AmmoCurrent == 0 && Time.time >= nextReloadTime)
+            if (AmmoManager.AmmoCurrent == 0 && Time.time >= nextReloadTime)
             {
 
                 AmmoManager.AmmoCurrent = 30;
                 AmmoManager.AmmoTotal = AmmoManager.AmmoTotal - 30;
                 AmmoReload.SetActive(false);
-            }*/
+            }
         if (timer >= timeBetweenBullets*effectsDisplayTime)
         {
             DisableEffects();
