@@ -20,8 +20,8 @@ public class PlayerShooting : MonoBehaviour {
     private AudioSource gunAudio;
     private LineRenderer gunLine;
     //目前彈藥.總彈藥.重新裝填時間
-    //public static int AmmoCurrent = 30;
-    //public static int AmmoAmmoCapNum = 30;
+    //public static int AmmoCurrent = 10;
+    //public static int AmmoCapNum = 10;
     //public static int AmmoTotal = 900;
     public readonly float ReloadTime = 3f;
     public float nextReloadTime;

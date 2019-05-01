@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class AmmoManager : MonoBehaviour {
     //目前彈藥.彈匣容量.總彈藥量.重新裝填時間
-    public static int AmmoCurrent=30;
-    public static int AmmoCapNum = 30;
+    public static int AmmoCurrent=10;
+    public static int AmmoCapNum =10;
     public static int AmmoTotal=900;
+    public static int AmmoTotalNum = 900;
     /*public readonly float ReloadTime = 3f;
     public float nextReloadTime;
     //重新裝填文字

@@ -93,6 +93,9 @@ public class PlayerHealth : MonoBehaviour {
     public void RestartLevel()
     {
         Application.LoadLevel("Level1");
+        AmmoManager.AmmoCurrent = AmmoManager.AmmoCapNum;
+        AmmoManager.AmmoTotal = AmmoManager.AmmoTotalNum;
+        ScoreManager.score = ScoreManager.ScoreNum;
     }
     //接關
     public void ContinueLevel()
