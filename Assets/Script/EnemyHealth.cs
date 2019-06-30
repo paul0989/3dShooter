@@ -10,12 +10,16 @@ public class EnemyHealth : MonoBehaviour {
     private Animator anim;
     private bool isDead;//Enemy是否死亡
 
-    private bool isSinking = false;
+    private bool isSinking = false;    
+    private float sinkingDoneTime = 0f;  // 手動計算的死亡時間
+    private EnemyManager enemyManager;   // 物件所屬的管理器
+
     //enemy死亡特效
     public AudioClip deadClip;
     //播放enemy被打到/打死的
     private AudioSource enemyAudio;
     private ParticleSystem hitParticle;//被攻擊時的粒子特效
+
 
     private void Awake()
     {
@@ -23,6 +27,19 @@ public class EnemyHealth : MonoBehaviour {
         currentHealth = startHealth;//血量設置
         enemyAudio = GetComponent<AudioSource>();
         hitParticle = GetComponentInChildren<ParticleSystem>();
+    }
+
+    public void Alive( EnemyManager iEnemyManager )
+    {
+        enemyManager = iEnemyManager;
+
+        // 重置狀態
+        isDead = false;
+        currentHealth = startHealth;
+        GetComponent<EnemyMovement>().enabled = true;
+        GetComponent<NavMeshAgent>().enabled = true;
+        GetComponent<EnemyAttack>().enabled = true;
+        isSinking = false;
     }
 
     private void Death()
@@ -58,15 +75,24 @@ public class EnemyHealth : MonoBehaviour {
     public void StartSinking()
     {
         isSinking = true;
+
+        // 改成手動 移除
         //gameObject兩秒移除
-        Destroy(gameObject,2f);
+        //Destroy(gameObject,2f);
+        sinkingDoneTime = Time.time + 2f;
     }
     // Update is called once per frame
     void Update () {
+        //Debug.Log( this.gameObject.name + " - " + enemyManager );
+
         if (isSinking)
         {
             //屍體往下沉
             transform.Translate(Vector3.down*Time.deltaTime);
+        }
+        if (isSinking && ( Time.time >= sinkingDoneTime ))
+        {
+            enemyManager.HandleEnemyDeath( this.gameObject );
         }
 	}
 }
