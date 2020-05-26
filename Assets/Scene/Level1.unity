@@ -1803,9 +1803,7 @@ MonoBehaviour:
   delayTime: 10
   repeatRate: 10
   spawnPoints:
-  - {fileID: 1290303436}
-  - {fileID: 419118375}
-  - {fileID: 255827261}
+  - {fileID: 843517059}
 --- !u!4 &1064999875
 Transform:
   m_ObjectHideFlags: 0

@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour {
 
-    public readonly float AwakeTime = 5f;
-
-    // Static Manager
+    public readonly float AwakeTime = 5f;    
     public static HealthManager _Instance;
+    // Static Manager
 
     // 容器
     public Health[] healthObjects;
@@ -28,12 +27,12 @@ public class HealthManager : MonoBehaviour {
             healthObjects[i].transform.name = i.ToString();
         }
     }
-
-    // 補血方法 給膠囊呼叫
+        
     public void HealthObjectCostEnergy(GameObject healthObject)
-    {
-        // 取得 傳入物件 名稱 的數字型別
+    // 補血方法 給膠囊呼叫
+    {        
         int objectNum = System.Convert.ToInt32(healthObject.name);
+        // 取得 傳入物件 名稱 的數字型別
 
         //int objectNum = System.Convert.ToInt32( healthObject.name );
         healthObjects[objectNum].gameObject.SetActive(false);
@@ -44,15 +43,16 @@ public class HealthManager : MonoBehaviour {
     void Update()
     {
         for (int i = 0; i < nextAwakeTime.Length; i++)
-        {
-            // 跳過已經是啟動狀態的物件
+        {            
             if (healthObjects[i].gameObject.activeSelf)
+            // 跳過已經是啟動狀態的物件
             {
                 continue;
             }
 
-            // 判斷時間
+            
             if (Time.time >= nextAwakeTime[i])
+            // 判斷時間
             {
                 healthObjects[i].gameObject.SetActive(true);
             }
